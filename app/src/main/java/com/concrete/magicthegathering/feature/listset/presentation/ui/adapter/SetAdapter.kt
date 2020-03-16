@@ -40,8 +40,8 @@ class SetAdapter : RecyclerView.Adapter<SetAdapter.ItemViewHolder>() {
         fun bindView(card: Card) = with(view){
             Glide.with(context)
                 .load(card.imageUrl)
-                .placeholder(R.drawable.ic_image_24dp)
-                .error(R.drawable.ic_image_24dp)
+                .placeholder(R.drawable.image_not_found)
+                .error(R.drawable.image_not_found)
                 .into(view.image_cover)
         }
     }

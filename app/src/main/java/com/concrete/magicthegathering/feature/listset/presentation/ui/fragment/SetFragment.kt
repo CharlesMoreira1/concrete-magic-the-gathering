@@ -87,6 +87,7 @@ class SetFragment : Fragment() {
     private fun showSuccessCards(listCards: List<Card>){
         setAdapter.addList(listCards)
         recycler_set.visibility = View.VISIBLE
+        include_layout_header.visibility = View.VISIBLE
         include_loading_center.visibility = View.GONE
         include_loading_bottom.visibility = View.GONE
         include_error_center.visibility = View.GONE
@@ -96,6 +97,7 @@ class SetFragment : Fragment() {
     private fun showLoadingAll(){
         include_loading_center.visibility = View.VISIBLE
         include_error_center.visibility = View.GONE
+        include_layout_header.visibility = View.GONE
     }
 
     private fun showErrorAll(){
@@ -103,6 +105,7 @@ class SetFragment : Fragment() {
         include_loading_center.visibility = View.GONE
         include_loading_bottom.visibility = View.GONE
         recycler_set.visibility = View.GONE
+        include_layout_header.visibility = View.GONE
 
         clickRefresh()
     }

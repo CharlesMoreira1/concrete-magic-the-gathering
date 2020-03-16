@@ -11,7 +11,6 @@ import com.concrete.magicthegathering.data.model.entity.sets.Set
 import com.concrete.magicthegathering.feature.listset.repository.SetRepository
 import kotlinx.coroutines.*
 import retrofit2.Response
-import java.lang.Exception
 import kotlin.math.ceil
 
 class SetViewModel(private val repository: SetRepository) : BaseViewModel() {
@@ -55,8 +54,8 @@ class SetViewModel(private val repository: SetRepository) : BaseViewModel() {
                     mutableLiveDataListCards.success(listCards)
                     releasedLoad = true
                 }
-            } catch (e: Exception) {
-                mutableLiveDataListCards.error(e)
+            } catch (t: Throwable) {
+                mutableLiveDataListCards.error(t)
             }
         }
     }
@@ -75,10 +74,7 @@ class SetViewModel(private val repository: SetRepository) : BaseViewModel() {
 
     private suspend fun multipleRequestsListCards(codeID: String) {
         withContext(Dispatchers.IO) {
-            val listPageNumbers = arrayListOf<Int>()
-            (2..lastPage).forEach { listPageNumbers.add(it) }
-
-            listPageNumbers.map {
+            (2..lastPage).map {
                 delay(1000)
                 async { listCards.addAll(repository.getListCards(codeID, it)!!) }
             }.awaitAll()
