@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Concrete - Magic The Gathering</string>
+
+    <!-- All App -->
+    <string name="message_status_erro_title">Desculpe, algum erro aconteceu.</string>
+    <string name="message_status_erro_subtitle">Pressione o botão abaixo para\ntentar novamente.</string>
 </resources>

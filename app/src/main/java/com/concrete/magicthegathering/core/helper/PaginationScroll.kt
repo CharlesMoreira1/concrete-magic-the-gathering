@@ -7,7 +7,7 @@ fun RecyclerView.addPaginationScroll(layoutManager: LinearLayoutManager,
                                      loadMoreItems: () -> Unit, getTotalPageCount: () -> Int = { 0 },
                                      isLoading: () -> Boolean,
                                      isLastPage: () -> Boolean = { false },
-                                     hideOthersItems: () -> Unit){
+                                     hideOthersItems: () -> Unit = {}){
 
     this.addOnScrollListener(object : RecyclerView.OnScrollListener(){
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
