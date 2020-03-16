@@ -23,15 +23,15 @@ class ApiClient {
         .addInterceptor(loggingInterceptor)
         .build()
 
-    private val retrofit: (String) -> Retrofit = { url ->
+    private val retrofit: () -> Retrofit = {
         Retrofit.Builder()
-            .baseUrl(url)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
     }
 
     fun <T> service(entityClass: Class<T>): T {
-        return retrofit(BASE_URL).create(entityClass)
+        return retrofit().create(entityClass)
     }
 }
