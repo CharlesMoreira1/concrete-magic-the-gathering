@@ -14,7 +14,9 @@
         android:usesCleartextTraffic="true"
         android:name=".MyApplication"
         tools:targetApi="m">
-        <activity android:name=".feature.MainActivity">
+        <activity android:name=".feature.MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

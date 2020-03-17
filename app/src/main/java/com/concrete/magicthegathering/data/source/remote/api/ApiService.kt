@@ -1,7 +1,7 @@
 package com.concrete.magicthegathering.data.source.remote.api
 
-import com.concrete.magicthegathering.data.model.entity.cards.CardsResponse
-import com.concrete.magicthegathering.data.model.entity.sets.SetsReponse
+import com.concrete.magicthegathering.data.model.entity.cards.CardResponse
+import com.concrete.magicthegathering.data.model.entity.sets.SetReponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -9,8 +9,8 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("cards")
-    suspend fun getCardResponse(@Query("set") set: String, @Query("page") page: Int): Response<CardsResponse>
+    suspend fun getCardResponse(@Query("set") set: String, @Query("page") page: Int): Response<CardResponse>
 
     @GET("sets")
-    suspend fun getSetsResponse(): SetsReponse
+    suspend fun getSetsResponse(): SetReponse
 }

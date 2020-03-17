@@ -1,37 +1,25 @@
 package com.concrete.magicthegathering.feature.listset.presentation.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-
 import com.concrete.magicthegathering.R
 import com.concrete.magicthegathering.core.helper.addPaginationScroll
 import com.concrete.magicthegathering.core.helper.observeResource
-import com.concrete.magicthegathering.data.model.entity.cards.Card
-import com.concrete.magicthegathering.data.model.entity.sets.Set
+import com.concrete.magicthegathering.core.util.rotationAnimation
+import com.concrete.magicthegathering.data.model.domain.SetDomain
 import com.concrete.magicthegathering.feature.listset.presentation.ui.adapter.SetAdapter
 import com.concrete.magicthegathering.feature.listset.presentation.viewmodel.SetViewModel
 import kotlinx.android.synthetic.main.fragment_set.*
 import kotlinx.android.synthetic.main.layout_error_center.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SetFragment : Fragment() {
+class SetFragment : Fragment(R.layout.fragment_set) {
 
-    private val setAdapter by lazy {
-        SetAdapter()
-    }
+    private lateinit var setAdapter: SetAdapter
 
     private val viewModel by viewModel<SetViewModel>()
-
-    private var listSets = listOf<Set>()
-    private var countPositionSets = 1
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_set, container, false)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -42,50 +30,51 @@ class SetFragment : Fragment() {
     private fun loadData() {
         viewModel.getLiveDataListSets.observeResource(viewLifecycleOwner,
             onSuccess = {
-                showSuccessSets(it)
+                showSuccess(it)
             },
             onError = {
-                showErrorAll()
+                showError()
             },
             onLoading = {
-                showLoadingAll()
-            })
-
-        viewModel.getLiveDataListCards.observeResource(viewLifecycleOwner,
-            onSuccess = {
-                showSuccessCards(it)
-            },
-            onError = {
-                showErrorAll()
+                showLoading()
             })
     }
 
     private fun setupUI() {
+        setAdapter = SetAdapter()
+
         with(recycler_set) {
             adapter = setAdapter
-            val gridLayoutManager = GridLayoutManager(context, 3)
-            layoutManager = gridLayoutManager
+            val gridLayoutManager = GridLayoutManager(context,3)
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (setAdapter.getItemViewType(position)) {
+                        SetAdapter.ITEM_HEADER -> gridLayoutManager.spanCount
+                        SetAdapter.ITEM_LIST_CARDS -> 1
+                        else -> gridLayoutManager.spanCount
+                    }
+                }
+            }
 
             addPaginationScroll(gridLayoutManager,
                 loadMoreItems = {
-                    nextSet()
+                    viewModel.nextSet()
+                    include_loading_bottom.visibility = View.VISIBLE
                 },
                 isLoading = {
                     viewModel.releasedLoad
+                },
+                hideOthersItems = {
+                    include_loading_center.visibility = View.GONE
                 })
 
             layoutManager = gridLayoutManager
         }
     }
 
-    private fun showSuccessSets(listSets: List<Set>){
-        this.listSets = listSets
-        viewModel.fetchListCards(this.listSets[0].code)
-        include_error_center.visibility = View.GONE
-    }
+    private fun showSuccess(setDomain: SetDomain){
+        setAdapter.addList(setDomain)
 
-    private fun showSuccessCards(listCards: List<Card>){
-        setAdapter.addList(listCards)
         recycler_set.visibility = View.VISIBLE
         include_layout_header.visibility = View.VISIBLE
         include_loading_center.visibility = View.GONE
@@ -94,33 +83,33 @@ class SetFragment : Fragment() {
         viewModel.releasedLoad = true
     }
 
-    private fun showLoadingAll(){
+    private fun showLoading(){
         include_loading_center.visibility = View.VISIBLE
         include_error_center.visibility = View.GONE
         include_layout_header.visibility = View.GONE
     }
 
-    private fun showErrorAll(){
-        include_error_center.visibility = View.VISIBLE
+    private fun showError(){
+        if (viewModel.countPositionSets > 1){
+            include_error_center.visibility = View.GONE
+        } else {
+            include_error_center.visibility = View.VISIBLE
+            include_layout_header.visibility = View.GONE
+            recycler_set.visibility = View.GONE
+
+            clickRefresh()
+        }
+
         include_loading_center.visibility = View.GONE
         include_loading_bottom.visibility = View.GONE
-        recycler_set.visibility = View.GONE
-        include_layout_header.visibility = View.GONE
-
-        clickRefresh()
     }
 
     private fun clickRefresh(){
-        image_refresh_error.setOnClickListener {
-            countPositionSets = 1
+        image_refresh_error.setOnClickListener { view ->
+            view.rotationAnimation()
+
             setAdapter.clearList()
             viewModel.refreshListSets()
         }
-    }
-
-    private fun nextSet(){
-        viewModel.fetchListCards(listSets[countPositionSets++].code)
-        include_loading_bottom.visibility = View.VISIBLE
-        viewModel.releasedLoad = false
     }
 }
