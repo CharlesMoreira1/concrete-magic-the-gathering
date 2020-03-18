@@ -7,7 +7,7 @@ import com.concrete.magicthegathering.data.model.entity.sets.Set
 
 object SetMapper {
 
-    suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): SetDomain? {
+    suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): SetDomain {
         set.let {
             return SetDomain(nameSet = it.name, listCardDomain = listCard(it.code))
         }

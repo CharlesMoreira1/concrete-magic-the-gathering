@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_set.*
 import kotlinx.android.synthetic.main.layout_error_center.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SetFragment : Fragment(R.layout.fragment_set) {
+class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
 
     private lateinit var setAdapter: SetAdapter
 
@@ -72,7 +72,7 @@ class SetFragment : Fragment(R.layout.fragment_set) {
         }
     }
 
-    private fun showSuccess(setDomain: SetDomain){
+    override fun showSuccess(setDomain: SetDomain){
         setAdapter.addList(setDomain)
 
         recycler_set.visibility = View.VISIBLE
@@ -83,13 +83,13 @@ class SetFragment : Fragment(R.layout.fragment_set) {
         viewModel.releasedLoad = true
     }
 
-    private fun showLoading(){
+    override fun showLoading(){
         include_loading_center.visibility = View.VISIBLE
         include_error_center.visibility = View.GONE
         include_layout_header.visibility = View.GONE
     }
 
-    private fun showError(){
+    override fun showError(){
         if (viewModel.countPositionSets > 1){
             include_error_center.visibility = View.GONE
         } else {

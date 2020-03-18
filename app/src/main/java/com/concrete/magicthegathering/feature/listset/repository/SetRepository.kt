@@ -3,22 +3,20 @@ package com.concrete.magicthegathering.feature.listset.repository
 import com.concrete.magicthegathering.data.model.domain.CardDomain
 import com.concrete.magicthegathering.data.model.domain.SetDomain
 import com.concrete.magicthegathering.data.model.entity.cards.Card
-import com.concrete.magicthegathering.data.model.entity.cards.CardResponse
 import com.concrete.magicthegathering.data.model.entity.sets.Set
 import com.concrete.magicthegathering.data.model.mapper.SetMapper
 import com.concrete.magicthegathering.data.source.remote.api.ApiService
+import com.concrete.magicthegathering.feature.listset.helper.roundTotalPage
 import kotlinx.coroutines.*
-import retrofit2.Response
-import kotlin.math.ceil
 
-class SetRepository(private val apiService: ApiService) {
+class SetRepository(private val apiService: ApiService): ISetRepository {
     private var listCards = arrayListOf<Card>()
     private var listSets = listOf<Set>()
     private var lastPage = 0
 
-    suspend fun getSetDomain(position: Int, isFirstRequest: Boolean): SetDomain?{
+    override suspend fun getSetDomain(position: Int, isFirstRequest: Boolean): SetDomain{
         if (isFirstRequest) {
-            listSets = apiService.getSetsResponse().sets.sortedByDescending { it.releaseDate }
+            listSets = apiService.getSetsResponse().sets
         }
         val set = listSets[position]
 
@@ -55,10 +53,5 @@ class SetRepository(private val apiService: ApiService) {
                 listCards.addAll(this.body()!!.cards)
             }
         }
-    }
-
-    private fun Response<CardResponse>.roundTotalPage(): Int {
-        val valueDouble = (headers()["total-count"]!!.toInt() / headers()["page-size"]!!.toDouble())
-        return ceil(valueDouble).toInt()
     }
 }

@@ -55,7 +55,7 @@ class SetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun addList(setDomain: SetDomain) {
         this.listData.add(setDomain)
         this.listData.addAll(setDomain.listCardDomain)
-        notifyItemChanged(this.listData.size - setDomain.listCardDomain.size, this.listData.size)
+        notifyItemRangeInserted(this.listData.size - setDomain.listCardDomain.size, this.listData.size)
     }
 
     fun clearList(){
