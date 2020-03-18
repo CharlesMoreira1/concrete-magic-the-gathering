@@ -21,7 +21,7 @@ fun <T> LiveData<Resource<T>>.observeResource(
     owner: LifecycleOwner,
     onSuccess: (T) -> Unit,
     onError: (Throwable) -> Unit,
-    onLoading: () -> Unit) {
+    onLoading: () -> Unit = {}) {
 
     observe(owner, Observer { resource ->
         when (resource) {
