@@ -43,4 +43,8 @@ class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), IS
         releasedLoad = false
         fetchListSets()
     }
+
+    override fun enablePagination(){
+        releasedLoad = true
+    }
 }

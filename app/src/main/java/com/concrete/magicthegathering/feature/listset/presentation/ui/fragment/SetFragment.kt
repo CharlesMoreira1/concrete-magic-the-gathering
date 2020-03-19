@@ -2,12 +2,16 @@ package com.concrete.magicthegathering.feature.listset.presentation.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.concrete.magicthegathering.R
 import com.concrete.magicthegathering.core.helper.addPaginationScroll
 import com.concrete.magicthegathering.core.helper.observeResource
+import com.concrete.magicthegathering.core.util.navigateWithAnimations
 import com.concrete.magicthegathering.core.util.rotationAnimation
+import com.concrete.magicthegathering.data.model.domain.CardDomain
 import com.concrete.magicthegathering.data.model.domain.SetDomain
 import com.concrete.magicthegathering.feature.listset.presentation.ui.adapter.SetAdapter
 import com.concrete.magicthegathering.feature.listset.presentation.viewmodel.SetViewModel
@@ -17,14 +21,29 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
 
-    private lateinit var setAdapter: SetAdapter
+    private val setAdapter: SetAdapter by lazy {
+        SetAdapter {
+            navDetailCardFragment(it)
+        }
+    }
 
     private val viewModel by viewModel<SetViewModel>()
+    private var enableAddListSets = true
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         loadData()
         setupUI()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        enableAddListSets = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        enableAddListSets = false
     }
 
     private fun loadData() {
@@ -41,8 +60,6 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
     }
 
     private fun setupUI() {
-        setAdapter = SetAdapter()
-
         with(recycler_set) {
             adapter = setAdapter
             val gridLayoutManager = GridLayoutManager(context,3)
@@ -72,15 +89,26 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
         }
     }
 
-    override fun showSuccess(setDomain: SetDomain){
-        setAdapter.addList(setDomain)
+    private fun navDetailCardFragment(cardDomain: CardDomain){
+        if (viewModel.releasedLoad) {
+            val navDirections = SetFragmentDirections.actionSetFragmentToDetailCardFragment(cardDomain.image)
+            findNavController().navigateWithAnimations(navDirections)
+        } else {
+            Toast.makeText(context, R.string.message_alert_loading_set, Toast.LENGTH_LONG).show()
+        }
+    }
 
-        recycler_set.visibility = View.VISIBLE
-        include_layout_header.visibility = View.VISIBLE
-        include_loading_center.visibility = View.GONE
-        include_loading_bottom.visibility = View.GONE
-        include_error_center.visibility = View.GONE
-        viewModel.releasedLoad = true
+    override fun showSuccess(setDomain: SetDomain){
+        if (enableAddListSets) {
+            setAdapter.addList(setDomain)
+
+            recycler_set.visibility = View.VISIBLE
+            include_layout_header.visibility = View.VISIBLE
+            include_loading_center.visibility = View.GONE
+            include_loading_bottom.visibility = View.GONE
+            include_error_center.visibility = View.GONE
+            viewModel.enablePagination()
+        }
     }
 
     override fun showLoading(){
