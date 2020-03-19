@@ -10,5 +10,6 @@
     <string name="message_alert_loading_set">"Wait… we're loading the next deck."</string>
 
     <!-- Screen Detail Cards -->
-    <string name="name_button_favorite">add card to deck</string>
+    <string name="name_button_favorite_add">add card</string>
+    <string name="name_button_favorite_remove">remove card</string>
 </resources>

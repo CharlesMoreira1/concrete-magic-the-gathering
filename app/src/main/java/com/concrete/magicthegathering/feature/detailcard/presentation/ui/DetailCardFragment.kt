@@ -3,15 +3,25 @@ package com.concrete.magicthegathering.feature.detailcard.presentation.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.concrete.magicthegathering.R
+import com.concrete.magicthegathering.data.model.entity.favorite.CardFavorite
+import com.concrete.magicthegathering.feature.detailcard.presentation.viewmodel.DetailCardViewModel
 import kotlinx.android.synthetic.main.fragment_detail_card.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailCardFragment : Fragment(R.layout.fragment_detail_card) {
+class DetailCardFragment : Fragment(R.layout.fragment_detail_card), IDetailCardFragment {
 
     private val args: DetailCardFragmentArgs by navArgs()
+
+    private val cardFavorite: CardFavorite by lazy {
+        CardFavorite(imageCard = args.imageCard, multiverseid = args.multiverseId)
+    }
+
+    private val viewModel by viewModel<DetailCardViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -19,12 +29,35 @@ class DetailCardFragment : Fragment(R.layout.fragment_detail_card) {
         navBackStack()
     }
 
-    private fun loadData(){
+    private fun loadData() {
+        viewModel.findByCard(args.multiverseId)
+
+        viewModel.getLiveDataCard?.observe(viewLifecycleOwner, Observer {
+            addCardToFavorite(it != null)
+        })
+
+        loadImageCard()
+    }
+
+    private fun loadImageCard(){
         Glide.with(this)
             .load(args.imageCard)
             .placeholder(R.drawable.image_not_found)
             .error(R.drawable.image_not_found)
             .into(image_detail_card)
+    }
+
+    override fun addCardToFavorite(insertEnabled: Boolean){
+        button_favorite_card.setOnClickListener {
+            viewModel.insertOrRemoveCard(insertEnabled, cardFavorite)
+        }
+
+        changeButtonFavorite(insertEnabled)
+    }
+
+    private fun changeButtonFavorite(insertEnabled: Boolean){
+        button_favorite_card.text = getString(if (insertEnabled) R.string.name_button_favorite_remove
+        else R.string.name_button_favorite_add)
     }
 
     private fun navBackStack(){
