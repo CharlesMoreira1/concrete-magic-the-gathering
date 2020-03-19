@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<ISetRepository> { SetRepository(get())}
+    single<ISetRepository> { SetRepository(get()) }
 }
 
 val viewModelModule = module {

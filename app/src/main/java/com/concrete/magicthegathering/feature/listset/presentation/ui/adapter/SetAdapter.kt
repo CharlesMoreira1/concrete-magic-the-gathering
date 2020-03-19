@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.concrete.magicthegathering.R
-import com.concrete.magicthegathering.core.util.fadeAnimation
 import com.concrete.magicthegathering.data.model.domain.CardDomain
 import com.concrete.magicthegathering.data.model.domain.SetDomain
 import kotlinx.android.synthetic.main.item_card.view.*
 import kotlinx.android.synthetic.main.item_header_set.view.*
 
-class SetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SetAdapter(private val onItemClickListener: ((CardDomain) -> Unit)) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listData = ArrayList<Any>()
 
@@ -25,7 +24,7 @@ class SetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return if (p1 == ITEM_HEADER) {
             HeaderViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_header_set, p0, false))
         } else {
-            CardsViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_card, p0, false))
+            CardsViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_card, p0, false), onItemClickListener)
         }
     }
 
@@ -70,18 +69,19 @@ class SetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class CardsViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class CardsViewHolder(private val view: View, private val onItemClickListener: ((CardDomain) -> Unit)) : RecyclerView.ViewHolder(view) {
 
         fun bindView(cardDomain: CardDomain) = with(view){
-
-            this.image_cover.fadeAnimation()
 
             Glide.with(context)
                 .load(cardDomain.image)
                 .placeholder(R.drawable.image_not_found)
                 .error(R.drawable.image_not_found)
                 .into(this.image_cover)
+
+            this.setOnClickListener {
+                onItemClickListener.invoke(cardDomain)
+            }
         }
     }
-
 }

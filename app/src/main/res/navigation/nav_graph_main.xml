@@ -10,5 +10,19 @@
         android:id="@+id/setFragment"
         android:name="com.concrete.magicthegathering.feature.listset.presentation.ui.fragment.SetFragment"
         android:label="fragment_set"
-        tools:layout="@layout/fragment_set" />
+        tools:layout="@layout/fragment_set" >
+        <action
+            android:id="@+id/action_setFragment_to_detailCardFragment"
+            app:destination="@id/detailCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailCardFragment"
+        android:name="com.concrete.magicthegathering.feature.detailcard.presentation.ui.DetailCardFragment"
+        android:label="fragment_detail_card"
+        tools:layout="@layout/fragment_detail_card" >
+        <argument
+            android:name="image_card"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>
