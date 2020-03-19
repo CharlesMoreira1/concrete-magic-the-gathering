@@ -24,5 +24,8 @@
             android:name="image_card"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="multiverse_id"
+            app:argType="long" />
     </fragment>
 </navigation>
