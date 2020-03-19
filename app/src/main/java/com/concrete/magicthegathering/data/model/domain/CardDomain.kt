@@ -1,3 +1,3 @@
 package com.concrete.magicthegathering.data.model.domain
 
-data class CardDomain(val image: String?)
+data class CardDomain(val image: String?, val multiverseid: Long)
