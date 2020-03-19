@@ -32,7 +32,7 @@ class DetailCardFragment : Fragment(R.layout.fragment_detail_card), IDetailCardF
     private fun loadData() {
         viewModel.findByCard(args.multiverseId)
 
-        viewModel.getLiveDataCard?.observe(viewLifecycleOwner, Observer {
+        viewModel.getLiveDataCard.observe(viewLifecycleOwner, Observer {
             addCardToFavorite(it != null)
         })
 

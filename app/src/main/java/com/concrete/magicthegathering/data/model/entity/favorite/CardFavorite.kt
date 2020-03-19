@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favorite")
 data class CardFavorite(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
-    var imageCard: String?,
-    var multiverseid: Long
+    val id: Long = 0,
+    val imageCard: String?,
+    val multiverseid: Long
 )

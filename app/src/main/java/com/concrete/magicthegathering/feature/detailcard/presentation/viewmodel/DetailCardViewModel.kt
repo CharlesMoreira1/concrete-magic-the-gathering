@@ -5,12 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.concrete.magicthegathering.core.base.BaseViewModel
 import com.concrete.magicthegathering.data.model.entity.favorite.CardFavorite
 import com.concrete.magicthegathering.feature.detailcard.repository.IDetailCardRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class DetailCardViewModel(private val repository: IDetailCardRepository) : BaseViewModel(), IDetailCardViewModel {
-    var getLiveDataCard: LiveData<CardFavorite?>? = null
+class DetailCardViewModel(private val repository: IDetailCardRepository) : BaseViewModel(),
+    IDetailCardViewModel {
+    lateinit var getLiveDataCard: LiveData<CardFavorite?>
 
     override fun findByCard(multiverseid: Long) {
         getLiveDataCard = repository.findByCard(multiverseid)
@@ -18,12 +17,10 @@ class DetailCardViewModel(private val repository: IDetailCardRepository) : BaseV
 
     override fun insertOrRemoveCard(insertEnabled: Boolean, cardFavorite: CardFavorite) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                if (insertEnabled) {
-                    repository.removeCard(cardFavorite)
-                } else {
-                    repository.insertCard(cardFavorite)
-                }
+            if (insertEnabled) {
+                repository.removeCard(cardFavorite)
+            } else {
+                repository.insertCard(cardFavorite)
             }
         }
     }
