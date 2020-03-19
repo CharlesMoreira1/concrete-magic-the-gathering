@@ -91,7 +91,8 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
 
     private fun navDetailCardFragment(cardDomain: CardDomain){
         if (viewModel.releasedLoad) {
-            val navDirections = SetFragmentDirections.actionSetFragmentToDetailCardFragment(cardDomain.image)
+            val navDirections = SetFragmentDirections.actionSetFragmentToDetailCardFragment(
+                cardDomain.image, cardDomain.multiverseid)
             findNavController().navigateWithAnimations(navDirections)
         } else {
             Toast.makeText(context, R.string.message_alert_loading_set, Toast.LENGTH_LONG).show()

@@ -17,7 +17,7 @@ object SetMapper {
         val listCardsDomain = ArrayList<CardDomain>()
 
         listCards.forEach {
-            val cardsDomain = CardDomain(image = it.imageUrl)
+            val cardsDomain = CardDomain(image = it.imageUrl, multiverseid = it.multiverseid.toLong())
             listCardsDomain.add(cardsDomain)
         }
 
