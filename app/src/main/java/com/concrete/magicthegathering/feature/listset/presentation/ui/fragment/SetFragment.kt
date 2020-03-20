@@ -1,18 +1,19 @@
 package com.concrete.magicthegathering.feature.listset.presentation.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.concrete.magicthegathering.data.model.domain.ListSetDomain
 import com.concrete.magicthegathering.R
 import com.concrete.magicthegathering.core.helper.addPaginationScroll
 import com.concrete.magicthegathering.core.helper.observeResource
 import com.concrete.magicthegathering.core.util.navigateWithAnimations
 import com.concrete.magicthegathering.core.util.rotationAnimation
 import com.concrete.magicthegathering.data.model.domain.CardDomain
-import com.concrete.magicthegathering.data.model.domain.SetDomain
 import com.concrete.magicthegathering.feature.listset.presentation.ui.adapter.SetAdapter
 import com.concrete.magicthegathering.feature.listset.presentation.viewmodel.SetViewModel
 import kotlinx.android.synthetic.main.fragment_set.*
@@ -34,6 +35,7 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
         super.onActivityCreated(savedInstanceState)
         loadData()
         setupUI()
+        swipeRefresh()
     }
 
     override fun onResume() {
@@ -66,8 +68,7 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (setAdapter.getItemViewType(position)) {
-                        SetAdapter.ITEM_HEADER -> gridLayoutManager.spanCount
-                        SetAdapter.ITEM_LIST_CARDS -> 1
+                        ListSetDomain.ITEM_CARDS -> 1
                         else -> gridLayoutManager.spanCount
                     }
                 }
@@ -92,19 +93,18 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
     private fun navDetailCardFragment(cardDomain: CardDomain){
         if (viewModel.releasedLoad) {
             val navDirections = SetFragmentDirections.actionSetFragmentToDetailCardFragment(
-                cardDomain.image, cardDomain.multiverseid)
+                cardDomain.image, cardDomain.multiverseid, cardDomain.name)
             findNavController().navigateWithAnimations(navDirections)
         } else {
             Toast.makeText(context, R.string.message_alert_loading_set, Toast.LENGTH_LONG).show()
         }
     }
 
-    override fun showSuccess(setDomain: SetDomain){
+    override fun showSuccess(listSetDomain: List<ListSetDomain>){
         if (enableAddListSets) {
-            setAdapter.addList(setDomain)
+            setAdapter.addList(listSetDomain)
 
             recycler_set.visibility = View.VISIBLE
-            include_layout_header.visibility = View.VISIBLE
             include_loading_center.visibility = View.GONE
             include_loading_bottom.visibility = View.GONE
             include_error_center.visibility = View.GONE
@@ -115,7 +115,6 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
     override fun showLoading(){
         include_loading_center.visibility = View.VISIBLE
         include_error_center.visibility = View.GONE
-        include_layout_header.visibility = View.GONE
     }
 
     override fun showError(){
@@ -123,7 +122,6 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
             include_error_center.visibility = View.GONE
         } else {
             include_error_center.visibility = View.VISIBLE
-            include_layout_header.visibility = View.GONE
             recycler_set.visibility = View.GONE
 
             clickRefresh()
@@ -133,12 +131,24 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
         include_loading_bottom.visibility = View.GONE
     }
 
+    private fun swipeRefresh() {
+        swipe_refresh.setOnRefreshListener {
+            Handler().postDelayed({
+                refresh()
+                swipe_refresh.isRefreshing = false
+            }, 1000)
+        }
+    }
+
     private fun clickRefresh(){
         image_refresh_error.setOnClickListener { view ->
             view.rotationAnimation()
-
-            setAdapter.clearList()
-            viewModel.refreshListSets()
+            refresh()
         }
+    }
+
+    private fun refresh() {
+        setAdapter.clearList()
+        viewModel.refreshListSets()
     }
 }
