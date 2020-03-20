@@ -14,6 +14,7 @@
         android:textSize="20sp"
         android:textColor="@android:color/background_light"
         android:textStyle="bold"/>
+
     <TextView
         android:id="@+id/text_description_error"
         android:layout_width="match_parent"
@@ -22,8 +23,8 @@
         android:layout_marginBottom="50dp"
         android:text="@string/message_status_erro_subtitle"
         android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:textColor="@android:color/background_light" />
     <ImageView
         android:id="@+id/image_refresh_error"
         android:layout_width="50dp"
