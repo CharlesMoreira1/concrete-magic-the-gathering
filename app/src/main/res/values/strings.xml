@@ -2,8 +2,8 @@
     <string name="app_name">Concrete - Magic The Gathering</string>
 
     <!-- All App -->
-    <string name="message_status_erro_title">Desculpe, algum erro aconteceu.</string>
-    <string name="message_status_erro_subtitle">Pressione o botão abaixo para\ntentar novamente.</string>
+    <string name="message_status_erro_title">Sorry, something went wrong.</string>
+    <string name="message_status_erro_subtitle">Press the button below\nto try again.</string>
 
     <!-- Screen Sets -->
     <string name="title_header">How about\nthese cards?</string>
