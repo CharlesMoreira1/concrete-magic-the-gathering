@@ -9,6 +9,8 @@ import com.concrete.magicthegathering.data.model.entity.sets.Set
 
 object SetMapper {
 
+    private const val BASE_URL_IMAGE_CARD = "https://gatherer.wizards.com/Handlers/Image.ashx?name=%s&type=card"
+
     suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): List<ListSetDomain> {
         val setDomain = set.let {
             SetDomain(nameSet = it.name, listCardDomain = listCard(it.code))
@@ -22,7 +24,7 @@ object SetMapper {
 
         listSetDomain.add(this)
 
-        this.listCardDomain.sortedBy { it.typeName }.groupBy { it.typeName }.map {
+        this.listCardDomain.groupBy { it.typeName }.map {
             listSetDomain.add(TypeSetDomain(it.key))
             listSetDomain.addAll(it.value)
         }
@@ -33,9 +35,11 @@ object SetMapper {
     fun transformEntityToDomainListCards(listCards: List<Card>): List<CardDomain> {
         val listCardsDomain = ArrayList<CardDomain>()
 
-        listCards.forEach {
-            val cardsDomain = CardDomain(image = it.imageUrl, name = it.name, multiverseid = it.multiverseid.toLong(), typeName = it.types[0])
-            listCardsDomain.add(cardsDomain)
+        listCards.forEach {card ->
+            card.types.map {
+                val cardsDomain = CardDomain(image = String.format(BASE_URL_IMAGE_CARD, card.name), name = card.name, multiverseid = card.multiverseid.toLong(), typeName = it)
+                listCardsDomain.add(cardsDomain)
+            }
         }
 
         return listCardsDomain
