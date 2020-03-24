@@ -4,61 +4,61 @@ import com.google.gson.annotations.SerializedName
 
 data class Card(
     @SerializedName("artist")
-    val artist: String,
+    val artist: String = "",
     @SerializedName("cmc")
-    val cmc: Double,
+    val cmc: Double = 0.0,
     @SerializedName("colorIdentity")
-    val colorIdentity: List<String>,
+    val colorIdentity: List<String> = listOf(),
     @SerializedName("colors")
-    val colors: List<String>,
+    val colors: List<String> = listOf(),
     @SerializedName("flavor")
-    val flavor: String,
+    val flavor: String = "",
     @SerializedName("foreignNames")
-    val foreignNames: List<Any>,
+    val foreignNames: List<Any> = listOf(),
     @SerializedName("id")
-    val id: String,
+    val id: String = "",
     @SerializedName("imageUrl")
-    val imageUrl: String,
+    val imageUrl: String = "",
     @SerializedName("layout")
-    val layout: String,
+    val layout: String = "",
     @SerializedName("legalities")
-    val legalities: List<Legality>,
+    val legalities: List<Legality> = listOf(),
     @SerializedName("manaCost")
-    val manaCost: String,
+    val manaCost: String = "",
     @SerializedName("multiverseid")
-    val multiverseid: Int,
+    val multiverseid: Int = 0,
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("number")
-    val number: String,
+    val number: String = "",
     @SerializedName("originalText")
-    val originalText: String,
+    val originalText: String = "",
     @SerializedName("originalType")
-    val originalType: String,
+    val originalType: String = "",
     @SerializedName("power")
-    val power: String,
+    val power: String = "",
     @SerializedName("printings")
-    val printings: List<String>,
+    val printings: List<String> = listOf(),
     @SerializedName("rarity")
-    val rarity: String,
+    val rarity: String = "",
     @SerializedName("rulings")
-    val rulings: List<Any>,
+    val rulings: List<Any> = listOf(),
     @SerializedName("set")
-    val setCode: String,
+    val setCode: String = "",
     @SerializedName("setName")
-    val setName: String,
+    val setName: String = "",
     @SerializedName("subtypes")
-    val subtypes: List<Any>,
+    val subtypes: List<Any> = listOf(),
     @SerializedName("supertypes")
-    val supertypes: List<Any>,
+    val supertypes: List<Any> = listOf(),
     @SerializedName("text")
-    val text: String,
+    val text: String = "",
     @SerializedName("toughness")
-    val toughness: String,
+    val toughness: String = "",
     @SerializedName("type")
-    val type: String,
+    val type: String = "",
     @SerializedName("types")
-    val types: List<String>,
+    val types: List<String> = listOf(),
     @SerializedName("variations")
-    val variations: List<String>
+    val variations: List<String> = listOf()
 )

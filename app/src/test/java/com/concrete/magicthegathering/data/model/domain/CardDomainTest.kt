@@ -1,6 +1,5 @@
-package com.concrete.magicthegathering.data.model.mapper.domain
+package com.concrete.magicthegathering.data.model.domain
 
-import com.concrete.magicthegathering.data.model.domain.CardDomain
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test

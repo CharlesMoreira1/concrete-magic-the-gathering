@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName
 
 data class Set(
     @SerializedName("block")
-    val block: String,
+    val block: String = "",
     @SerializedName("booster")
-    val booster: List<Any>,
+    val booster: List<Any> = listOf(),
     @SerializedName("code")
-    val code: String,
+    val code: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("onlineOnly")
-    val onlineOnly: Boolean,
+    val onlineOnly: Boolean = false,
     @SerializedName("releaseDate")
-    val releaseDate: String,
+    val releaseDate: String = "",
     @SerializedName("type")
-    val type: String
+    val type: String = ""
 )

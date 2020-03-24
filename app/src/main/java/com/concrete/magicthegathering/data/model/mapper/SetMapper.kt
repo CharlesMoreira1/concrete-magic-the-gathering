@@ -33,12 +33,12 @@ object SetMapper {
     }
 
     fun transformEntityToDomainListCards(listCards: List<Card>): List<CardDomain> {
-        val listCardsDomain = ArrayList<CardDomain>()
+        val listCardsDomain = arrayListOf<CardDomain>()
 
         listCards.forEach {card ->
             card.types.map {
-                val cardsDomain = CardDomain(image = String.format(BASE_URL_IMAGE_CARD, card.name), name = card.name, multiverseid = card.multiverseid.toLong(), typeName = it)
-                listCardsDomain.add(cardsDomain)
+                val cardDomain = CardDomain(image = String.format(BASE_URL_IMAGE_CARD, card.name), name = card.name, multiverseid = card.multiverseid.toLong(), typeName = it)
+                listCardsDomain.add(cardDomain)
             }
         }
 
