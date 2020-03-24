@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.concrete.magicthegathering.data.model.domain.ListSetDomain
+import com.concrete.magicthegathering.data.model.domain.ItemAdapter
 import com.concrete.magicthegathering.R
 import com.concrete.magicthegathering.core.helper.addPaginationScroll
 import com.concrete.magicthegathering.core.helper.observeResource
@@ -68,7 +68,7 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (setAdapter.getItemViewType(position)) {
-                        ListSetDomain.ITEM_CARDS -> 1
+                        ItemAdapter.ITEM_CARDS -> 1
                         else -> gridLayoutManager.spanCount
                     }
                 }
@@ -100,9 +100,9 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
         }
     }
 
-    override fun showSuccess(listSetDomain: List<ListSetDomain>){
+    override fun showSuccess(listItemAdapter: List<ItemAdapter>){
         if (enableAddListSets) {
-            setAdapter.addList(listSetDomain)
+            setAdapter.addList(listItemAdapter)
 
             recycler_set.visibility = View.VISIBLE
             include_loading_center.visibility = View.GONE

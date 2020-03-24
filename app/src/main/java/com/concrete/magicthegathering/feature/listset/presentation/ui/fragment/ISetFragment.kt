@@ -1,9 +1,9 @@
 package com.concrete.magicthegathering.feature.listset.presentation.ui.fragment
 
-import com.concrete.magicthegathering.data.model.domain.ListSetDomain
+import com.concrete.magicthegathering.data.model.domain.ItemAdapter
 
 interface ISetFragment {
-    fun showSuccess(listSetDomain: List<ListSetDomain>)
+    fun showSuccess(listItemAdapter: List<ItemAdapter>)
     fun showLoading()
     fun showError()
 }

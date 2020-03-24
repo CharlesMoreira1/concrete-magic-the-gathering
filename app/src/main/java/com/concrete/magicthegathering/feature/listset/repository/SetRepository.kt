@@ -1,7 +1,7 @@
 package com.concrete.magicthegathering.feature.listset.repository
 
 import com.concrete.magicthegathering.data.model.domain.CardDomain
-import com.concrete.magicthegathering.data.model.domain.ListSetDomain
+import com.concrete.magicthegathering.data.model.domain.ItemAdapter
 import com.concrete.magicthegathering.data.model.entity.cards.Card
 import com.concrete.magicthegathering.data.model.entity.sets.Set
 import com.concrete.magicthegathering.data.model.mapper.SetMapper
@@ -14,7 +14,7 @@ class SetRepository(private val apiService: ApiService): ISetRepository {
     private var listSets = listOf<Set>()
     private var lastPage = 0
 
-    override suspend fun getListSetDomain(position: Int, isFirstRequest: Boolean): List<ListSetDomain>{
+    override suspend fun getListSetDomain(position: Int, isFirstRequest: Boolean): List<ItemAdapter>{
         if (isFirstRequest) {
             listSets = apiService.getSetsResponse().sets.sortedByDescending { it.releaseDate }
         }

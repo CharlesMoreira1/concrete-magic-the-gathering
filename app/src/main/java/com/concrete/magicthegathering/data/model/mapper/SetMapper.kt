@@ -1,7 +1,7 @@
 package com.concrete.magicthegathering.data.model.mapper
 
 import com.concrete.magicthegathering.data.model.domain.CardDomain
-import com.concrete.magicthegathering.data.model.domain.ListSetDomain
+import com.concrete.magicthegathering.data.model.domain.ItemAdapter
 import com.concrete.magicthegathering.data.model.domain.SetDomain
 import com.concrete.magicthegathering.data.model.domain.TypeSetDomain
 import com.concrete.magicthegathering.data.model.entity.cards.Card
@@ -11,25 +11,25 @@ object SetMapper {
 
     private const val BASE_URL_IMAGE_CARD = "https://gatherer.wizards.com/Handlers/Image.ashx?name=%s&type=card"
 
-    suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): List<ListSetDomain> {
+    suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): List<ItemAdapter> {
         val setDomain = set.let {
             SetDomain(nameSet = it.name, listCardDomain = listCard(it.code))
         }
 
-        return setDomain.transformToListSet()
+        return setDomain.transformToListItemAdapter()
     }
 
-    private fun SetDomain.transformToListSet(): List<ListSetDomain> {
-        val listSetDomain = arrayListOf<ListSetDomain>()
+    private fun SetDomain.transformToListItemAdapter(): List<ItemAdapter> {
+        val listItemAdapter = arrayListOf<ItemAdapter>()
 
-        listSetDomain.add(this)
+        listItemAdapter.add(this)
 
         this.listCardDomain.groupBy { it.typeName }.map {
-            listSetDomain.add(TypeSetDomain(it.key))
-            listSetDomain.addAll(it.value)
+            listItemAdapter.add(TypeSetDomain(it.key))
+            listItemAdapter.addAll(it.value)
         }
 
-        return listSetDomain
+        return listItemAdapter
     }
 
     fun transformEntityToDomainListCards(listCards: List<Card>): List<CardDomain> {

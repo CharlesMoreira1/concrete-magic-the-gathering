@@ -1,6 +1,6 @@
 package com.concrete.magicthegathering.data.model.domain
 
-data class SetDomain(val nameSet: String, val listCardDomain: List<CardDomain>): ListSetDomain() {
+data class SetDomain(val nameSet: String, val listCardDomain: List<CardDomain>): ItemAdapter() {
     override val type: Int
         get() = ITEM_HEADER_SET
 
