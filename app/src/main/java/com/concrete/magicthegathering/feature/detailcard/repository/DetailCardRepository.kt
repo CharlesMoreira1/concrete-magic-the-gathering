@@ -6,8 +6,8 @@ import com.concrete.magicthegathering.data.source.local.dao.FavoriteDao
 
 class DetailCardRepository(private val favoriteDao: FavoriteDao): IDetailCardRepository{
 
-    override fun findByCard(multiverseid: Long): LiveData<CardFavorite?> {
-        return favoriteDao.findByCard(multiverseid)
+    override fun findByCard(idCard: String): LiveData<CardFavorite?> {
+        return favoriteDao.findByCard(idCard)
     }
 
     override suspend fun insertCard(cardFavorite: CardFavorite){
@@ -15,6 +15,6 @@ class DetailCardRepository(private val favoriteDao: FavoriteDao): IDetailCardRep
     }
 
     override suspend fun removeCard(cardFavorite: CardFavorite){
-        favoriteDao.removeCard(cardFavorite.multiverseid)
+        favoriteDao.removeCard(cardFavorite.idCard)
     }
 }

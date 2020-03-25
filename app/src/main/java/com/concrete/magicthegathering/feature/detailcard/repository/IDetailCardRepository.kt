@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.concrete.magicthegathering.data.model.entity.favorite.CardFavorite
 
 interface IDetailCardRepository{
-    fun findByCard(multiverseid: Long): LiveData<CardFavorite?>
+    fun findByCard(idCard: String): LiveData<CardFavorite?>
     suspend fun insertCard(cardFavorite: CardFavorite)
     suspend fun removeCard(cardFavorite: CardFavorite)
 }

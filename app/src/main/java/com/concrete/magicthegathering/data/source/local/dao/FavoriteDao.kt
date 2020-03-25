@@ -9,12 +9,12 @@ import com.concrete.magicthegathering.data.model.entity.favorite.CardFavorite
 
 @Dao
 interface FavoriteDao {
-    @Query("SELECT * FROM favorite WHERE multiverseid = :multiverseid")
-    fun findByCard(multiverseid: Long): LiveData<CardFavorite?>
+    @Query("SELECT * FROM favorite WHERE idCard = :idCard")
+    fun findByCard(idCard: String): LiveData<CardFavorite?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCard(cardFavorite: CardFavorite)
 
-    @Query("DELETE FROM favorite WHERE multiverseid = :multiverseid")
-    suspend fun removeCard(multiverseid: Long)
+    @Query("DELETE FROM favorite WHERE idCard = :idCard")
+    suspend fun removeCard(idCard: String)
 }

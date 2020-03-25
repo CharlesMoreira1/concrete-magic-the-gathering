@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.concrete.magicthegathering.core.base.BaseViewModel
 import com.concrete.magicthegathering.core.helper.Resource
-import com.concrete.magicthegathering.data.model.domain.SetDomain
+import com.concrete.magicthegathering.data.model.ItemType
 import com.concrete.magicthegathering.feature.listset.repository.ISetRepository
 
 class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), ISetViewModel {
-    private val mutableLiveDataListSets = MutableLiveData<Resource<SetDomain>>()
+    private val mutableLiveDataListSets = MutableLiveData<Resource<List<ItemType>>>()
 
     var countPositionSets = 1
     var releasedLoad: Boolean = true
@@ -18,7 +18,7 @@ class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), IS
         fetchListSets()
     }
 
-    val getLiveDataListSets: LiveData<Resource<SetDomain>>
+    val getLiveDataListSets: LiveData<Resource<List<ItemType>>>
         get() = mutableLiveDataListSets
 
     override fun fetchListSets(position: Int, isFirstRequest: Boolean) {
@@ -26,7 +26,7 @@ class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), IS
 
         viewModelScope.launchWithCallback(
             onSuccess = {
-                mutableLiveDataListSets.success(repository.getSetDomain(position, isFirstRequest))
+                mutableLiveDataListSets.success(repository.getListItemType(position, isFirstRequest))
             },
             onError = {
                 mutableLiveDataListSets.error(it)

@@ -8,5 +8,5 @@ data class CardFavorite(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val imageCard: String?,
-    val multiverseid: Long
+    val idCard: String
 )

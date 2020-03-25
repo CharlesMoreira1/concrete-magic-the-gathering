@@ -9,7 +9,8 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("cards")
-    suspend fun getCardResponse(@Query("set") set: String, @Query("page") page: Int): Response<CardResponse>
+    suspend fun getCardResponse(@Query("set") set: String, @Query("page") page: Int,
+                                @Query("orderBy") orderBy: String = "types"): Response<CardResponse>
 
     @GET("sets")
     suspend fun getSetsResponse(): SetReponse

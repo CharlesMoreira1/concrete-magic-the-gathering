@@ -11,8 +11,8 @@ class DetailCardViewModel(private val repository: IDetailCardRepository) : BaseV
     IDetailCardViewModel {
     lateinit var getLiveDataCard: LiveData<CardFavorite?>
 
-    override fun findByCard(multiverseid: Long) {
-        getLiveDataCard = repository.findByCard(multiverseid)
+    override fun findByCard(idCard: String) {
+        getLiveDataCard = repository.findByCard(idCard)
     }
 
     override fun insertOrRemoveCard(insertEnabled: Boolean, cardFavorite: CardFavorite) {
