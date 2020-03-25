@@ -15,19 +15,19 @@ import com.concrete.magicthegathering.data.model.domain.SetDomain
 import kotlinx.android.synthetic.main.item_card.view.*
 import kotlinx.android.synthetic.main.item_header_set.view.*
 import com.bumptech.glide.request.target.Target
-import com.concrete.magicthegathering.data.model.domain.ItemAdapter
+import com.concrete.magicthegathering.data.model.ItemType
 import com.concrete.magicthegathering.data.model.domain.TypeSetDomain
 
 class SetAdapter(private val onItemClickListener: ((CardDomain) -> Unit)) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var listItemAdapter = ArrayList<ItemAdapter>()
+    private var listItemType = ArrayList<ItemType>()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
         return when (p1) {
-            ItemAdapter.ITEM_HEADER_SET -> {
+            ItemType.ITEM_HEADER_SET -> {
                 HeaderSetViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_header_set, p0, false))
             }
-            ItemAdapter.ITEM_HEADER_TYPE_CARD -> {
+            ItemType.ITEM_HEADER_TYPE_CARD -> {
                 HeaderTypeCardViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_header_card, p0, false))
             }
             else -> {
@@ -37,36 +37,36 @@ class SetAdapter(private val onItemClickListener: ((CardDomain) -> Unit)) : Recy
     }
 
     override fun getItemViewType(position: Int): Int {
-        return listItemAdapter[position].type
+        return listItemType[position].type
     }
 
-    override fun getItemCount(): Int = listItemAdapter.size
+    override fun getItemCount(): Int = listItemType.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, p1: Int) {
         when (holder) {
             is HeaderSetViewHolder -> {
-                val dataItem = listItemAdapter[p1] as SetDomain
+                val dataItem = listItemType[p1] as SetDomain
                 holder.bindView(dataItem)
             }
 
             is HeaderTypeCardViewHolder -> {
-                val dataItem = listItemAdapter[p1] as TypeSetDomain
+                val dataItem = listItemType[p1] as TypeSetDomain
                 holder.bindView(dataItem)
             }
             is CardsViewHolder -> {
-                val dataItem = listItemAdapter[p1] as CardDomain
+                val dataItem = listItemType[p1] as CardDomain
                 holder.bindView(dataItem)
             }
         }
     }
 
-    fun addList(listItemAdapter: List<ItemAdapter>) {
-        this.listItemAdapter.addAll(listItemAdapter)
-        notifyItemRangeInserted(this.listItemAdapter.size - listItemAdapter.size, this.listItemAdapter.size)
+    fun addList(listItemType: List<ItemType>) {
+        this.listItemType.addAll(listItemType)
+        notifyItemRangeInserted(this.listItemType.size - listItemType.size, this.listItemType.size)
     }
 
     fun clearList(){
-        this.listItemAdapter.clear()
+        this.listItemType.clear()
         notifyDataSetChanged()
     }
 

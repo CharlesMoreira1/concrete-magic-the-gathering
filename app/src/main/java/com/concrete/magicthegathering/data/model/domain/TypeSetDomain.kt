@@ -1,6 +1,8 @@
 package com.concrete.magicthegathering.data.model.domain
 
-class TypeSetDomain(val nameType: String) : ItemAdapter() {
+import com.concrete.magicthegathering.data.model.ItemType
+
+class TypeSetDomain(val nameType: String) : ItemType() {
     override val type: Int
         get() = ITEM_HEADER_TYPE_CARD
 

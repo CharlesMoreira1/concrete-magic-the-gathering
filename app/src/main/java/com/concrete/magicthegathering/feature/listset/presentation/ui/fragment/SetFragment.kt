@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.concrete.magicthegathering.data.model.domain.ItemAdapter
+import com.concrete.magicthegathering.data.model.ItemType
 import com.concrete.magicthegathering.R
 import com.concrete.magicthegathering.core.helper.addPaginationScroll
 import com.concrete.magicthegathering.core.helper.observeResource
@@ -68,7 +68,7 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (setAdapter.getItemViewType(position)) {
-                        ItemAdapter.ITEM_CARDS -> 1
+                        ItemType.ITEM_CARDS -> 1
                         else -> gridLayoutManager.spanCount
                     }
                 }
@@ -93,16 +93,16 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
     private fun navDetailCardFragment(cardDomain: CardDomain){
         if (viewModel.releasedLoad) {
             val navDirections = SetFragmentDirections.actionSetFragmentToDetailCardFragment(
-                cardDomain.image, cardDomain.multiverseid, cardDomain.name)
+                cardDomain.image, cardDomain.idCard, cardDomain.name)
             findNavController().navigateWithAnimations(navDirections)
         } else {
             Toast.makeText(context, R.string.message_alert_loading_set, Toast.LENGTH_LONG).show()
         }
     }
 
-    override fun showSuccess(listItemAdapter: List<ItemAdapter>){
+    override fun showSuccess(listItemType: List<ItemType>){
         if (enableAddListSets) {
-            setAdapter.addList(listItemAdapter)
+            setAdapter.addList(listItemType)
 
             recycler_set.visibility = View.VISIBLE
             include_loading_center.visibility = View.GONE

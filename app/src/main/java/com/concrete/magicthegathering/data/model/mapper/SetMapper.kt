@@ -1,7 +1,7 @@
 package com.concrete.magicthegathering.data.model.mapper
 
 import com.concrete.magicthegathering.data.model.domain.CardDomain
-import com.concrete.magicthegathering.data.model.domain.ItemAdapter
+import com.concrete.magicthegathering.data.model.ItemType
 import com.concrete.magicthegathering.data.model.domain.SetDomain
 import com.concrete.magicthegathering.data.model.domain.TypeSetDomain
 import com.concrete.magicthegathering.data.model.entity.cards.Card
@@ -11,25 +11,31 @@ object SetMapper {
 
     private const val BASE_URL_IMAGE_CARD = "https://gatherer.wizards.com/Handlers/Image.ashx?name=%s&type=card"
 
-    suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): List<ItemAdapter> {
+    suspend fun transformEntityToDomain(set: Set, listCard: suspend (String) -> List<CardDomain>): List<ItemType> {
         val setDomain = set.let {
             SetDomain(nameSet = it.name, listCardDomain = listCard(it.code))
         }
 
-        return setDomain.transformToListItemAdapter()
+        return setDomain.transformToListItemType()
     }
 
-    private fun SetDomain.transformToListItemAdapter(): List<ItemAdapter> {
-        val listItemAdapter = arrayListOf<ItemAdapter>()
+    private fun SetDomain.transformToListItemType(): List<ItemType> {
+        val listItemType = arrayListOf<ItemType>()
 
-        listItemAdapter.add(this)
-
-        this.listCardDomain.groupBy { it.typeName }.map {
-            listItemAdapter.add(TypeSetDomain(it.key))
-            listItemAdapter.addAll(it.value)
+        if (this.isValid()) {
+            listItemType.add(this)
         }
 
-        return listItemAdapter
+        this.listCardDomain.groupBy { it.typeName }.map {
+            val typeSetDomain = TypeSetDomain(it.key)
+
+            if (typeSetDomain.isValid()) {
+                listItemType.add(TypeSetDomain(it.key))
+                listItemType.addAll(it.value)
+            }
+        }
+
+        return listItemType
     }
 
     fun transformEntityToDomainListCards(listCards: List<Card>): List<CardDomain> {
@@ -37,8 +43,11 @@ object SetMapper {
 
         listCards.forEach {card ->
             card.types.map {
-                val cardDomain = CardDomain(image = String.format(BASE_URL_IMAGE_CARD, card.name), name = card.name, multiverseid = card.multiverseid.toLong(), typeName = it)
-                listCardsDomain.add(cardDomain)
+                val cardDomain = CardDomain(image = String.format(BASE_URL_IMAGE_CARD, card.name), name = card.name, idCard = card.id, typeName = it)
+
+                if (cardDomain.isValid()) {
+                    listCardsDomain.add(cardDomain)
+                }
             }
         }
 

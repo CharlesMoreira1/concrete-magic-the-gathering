@@ -1,6 +1,6 @@
-package com.concrete.magicthegathering.data.model.domain
+package com.concrete.magicthegathering.data.model
 
-abstract class ItemAdapter {
+abstract class ItemType {
     abstract val type: Int
 
     companion object {

@@ -6,13 +6,13 @@ import com.concrete.magicthegathering.data.model.entity.sets.Set
 class MockSets{
 
     fun mockSetEntity(): Set {
-        return Set(code = "10E")
+        return Set(code = "10E", name = "name set", releaseDate = "date")
     }
 
     private fun mockCardEntity(position: Int): Card {
         return Card(imageUrl = "image card $position",
             name = "name card $position",
-            multiverseid = position,
+            id = position.toString(),
             types = listOf("water", "air"))
     }
 

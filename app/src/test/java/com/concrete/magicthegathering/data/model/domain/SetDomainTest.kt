@@ -12,7 +12,7 @@ class SetDomainTest {
     fun setUp() {
         setDomain = SetDomain(
             "2ED",
-            listOf(CardDomain("image", "name", 2, "typename")))
+            listOf(CardDomain("image", "name", "2", "typename")))
     }
 
     @Test

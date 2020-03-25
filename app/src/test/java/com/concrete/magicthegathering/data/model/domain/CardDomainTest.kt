@@ -13,7 +13,7 @@ class CardDomainTest {
         cardDomain = CardDomain(
             "image",
             "name",
-            2,
+            "2",
             "typeName")
     }
 

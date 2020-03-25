@@ -23,7 +23,7 @@ class DetailCardFragment : Fragment(R.layout.fragment_detail_card), IDetailCardF
     private val args: DetailCardFragmentArgs by navArgs()
 
     private val cardFavorite: CardFavorite by lazy {
-        CardFavorite(imageCard = args.imageCard, multiverseid = args.multiverseId)
+        CardFavorite(imageCard = args.imageCard, idCard = args.idCard)
     }
 
     private val viewModel by viewModel<DetailCardViewModel>()
@@ -35,7 +35,7 @@ class DetailCardFragment : Fragment(R.layout.fragment_detail_card), IDetailCardF
     }
 
     private fun loadData() {
-        viewModel.findByCard(args.multiverseId)
+        viewModel.findByCard(args.idCard)
 
         viewModel.getLiveDataCard.observe(viewLifecycleOwner, Observer {
             addCardToFavorite(it != null)

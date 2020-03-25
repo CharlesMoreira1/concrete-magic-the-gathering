@@ -9,8 +9,6 @@ data class Card(
     val id: String,
     @SerializedName("imageUrl")
     val imageUrl: String,
-    @SerializedName("multiverseid")
-    val multiverseid: Int,
     @SerializedName("types")
     val types: List<String>
 )
