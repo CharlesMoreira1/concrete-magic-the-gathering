@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.concrete.magicthegathering.R
@@ -89,6 +90,7 @@ class SetAdapter(private val onItemClickListener: ((CardDomain) -> Unit)) : Recy
         fun bindView(cardDomain: CardDomain) = with(view){
 
             this.text_name_card.text = cardDomain.name
+            text_name_card.visibility = View.VISIBLE
 
             Glide.with(context)
                 .load(cardDomain.image)
@@ -103,6 +105,7 @@ class SetAdapter(private val onItemClickListener: ((CardDomain) -> Unit)) : Recy
                     }
                 })
                 .placeholder(R.drawable.card_empty)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(this.image_cover)
 
             this.setOnClickListener {
