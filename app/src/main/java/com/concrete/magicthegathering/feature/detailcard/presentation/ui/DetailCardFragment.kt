@@ -18,7 +18,7 @@ import com.concrete.magicthegathering.feature.detailcard.presentation.viewmodel.
 import kotlinx.android.synthetic.main.fragment_detail_card.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailCardFragment : Fragment(R.layout.fragment_detail_card), IDetailCardFragment {
+class DetailCardFragment : Fragment(R.layout.fragment_detail_card) {
 
     private val args: DetailCardFragmentArgs by navArgs()
 
@@ -63,7 +63,7 @@ class DetailCardFragment : Fragment(R.layout.fragment_detail_card), IDetailCardF
             .into(image_detail_card)
     }
 
-    override fun addCardToFavorite(insertEnabled: Boolean){
+    private fun addCardToFavorite(insertEnabled: Boolean){
         button_favorite_card.setOnClickListener {
             viewModel.insertOrRemoveCard(insertEnabled, cardFavorite)
         }

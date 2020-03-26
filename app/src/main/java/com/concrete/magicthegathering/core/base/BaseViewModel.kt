@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel : ViewModel() {
 
     protected fun <T> MutableLiveData<Resource<T>>.success(data: T?) {
-        postValue(Resource.success(data))
+        value = Resource.success(data)
     }
 
     protected fun <T> MutableLiveData<Resource<T>>.error(t: Throwable?) {

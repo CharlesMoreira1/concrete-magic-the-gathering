@@ -18,9 +18,10 @@ import com.concrete.magicthegathering.feature.listset.presentation.ui.adapter.Se
 import com.concrete.magicthegathering.feature.listset.presentation.viewmodel.SetViewModel
 import kotlinx.android.synthetic.main.fragment_set.*
 import kotlinx.android.synthetic.main.layout_error_center.*
+import kotlinx.android.synthetic.main.layout_item_bottom.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
+class SetFragment : Fragment(R.layout.fragment_set) {
 
     private val setAdapter: SetAdapter by lazy {
         SetAdapter {
@@ -77,7 +78,7 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
             addPaginationScroll(gridLayoutManager,
                 loadMoreItems = {
                     viewModel.nextSet()
-                    include_loading_bottom.visibility = View.VISIBLE
+                    include_item_bottom.visibility = View.VISIBLE
                 },
                 isLoading = {
                     viewModel.releasedLoad
@@ -100,35 +101,50 @@ class SetFragment : Fragment(R.layout.fragment_set), ISetFragment {
         }
     }
 
-    override fun showSuccess(listItemType: List<ItemType>){
+    private fun showSuccess(listItemType: List<ItemType>){
         if (enableAddListSets) {
             setAdapter.addList(listItemType)
 
             recycler_set.visibility = View.VISIBLE
             include_loading_center.visibility = View.GONE
-            include_loading_bottom.visibility = View.GONE
+            include_item_bottom.visibility = View.GONE
             include_error_center.visibility = View.GONE
             viewModel.enablePagination()
         }
     }
 
-    override fun showLoading(){
+    private fun showLoading(){
         include_loading_center.visibility = View.VISIBLE
         include_error_center.visibility = View.GONE
+        include_item_bottom.visibility = View.GONE
+        itemBottomVisibility(true)
     }
 
-    override fun showError(){
+    private fun showError(){
         if (viewModel.countPositionSets > 1){
-            include_error_center.visibility = View.GONE
+            showErrorBottom()
         } else {
-            include_error_center.visibility = View.VISIBLE
-            recycler_set.visibility = View.GONE
-
-            clickRefresh()
+            showErrorFullScreen()
         }
 
         include_loading_center.visibility = View.GONE
-        include_loading_bottom.visibility = View.GONE
+    }
+
+    private fun showErrorFullScreen(){
+        include_error_center.visibility = View.VISIBLE
+        include_item_bottom.visibility = View.GONE
+        recycler_set.visibility = View.GONE
+
+        clickRefresh()
+    }
+
+    private fun showErrorBottom(){
+        itemBottomVisibility(false)
+    }
+
+    private fun itemBottomVisibility(isLoadingVisible: Boolean){
+        text_message_error_bottom.visibility = if (isLoadingVisible) View.GONE else View.VISIBLE
+        progress_bottom.visibility = if (isLoadingVisible) View.VISIBLE else View.GONE
     }
 
     private fun swipeRefresh() {
