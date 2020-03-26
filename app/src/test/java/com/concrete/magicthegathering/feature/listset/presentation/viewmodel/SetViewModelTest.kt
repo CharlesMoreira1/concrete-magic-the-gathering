@@ -5,10 +5,8 @@ import com.concrete.magicthegathering.data.model.ItemType
 import com.concrete.magicthegathering.feature.listset.repository.ISetRepository
 import com.concrete.magicthegathering.util.rule.instantLiveDataAndCoroutineRules
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.*
 import org.junit.Assert.assertEquals
 
@@ -31,6 +29,16 @@ class SetViewModelTest {
 
         viewModel.fetchListSets(1, true)
 
-        assertEquals(Resource.Success(repositoryList), viewModel.getLiveDataListSets.value)
+        assertEquals(viewModel.getLiveDataListSets.value, Resource.success(repositoryList))
+    }
+
+    @Test
+    fun givenFetchListSetsError_shouldEmitError() = runBlocking {
+        val error = Throwable()
+        coEvery { setRepository.getListItemType(any(), any()) } throws error
+
+        viewModel.fetchListSets(1, true)
+
+        assertEquals(viewModel.getLiveDataListSets.value, Resource.error<Throwable>(error))
     }
 }

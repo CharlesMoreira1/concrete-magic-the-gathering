@@ -8,7 +8,7 @@ import com.concrete.magicthegathering.core.helper.Resource
 import com.concrete.magicthegathering.data.model.ItemType
 import com.concrete.magicthegathering.feature.listset.repository.ISetRepository
 
-class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), ISetViewModel {
+class SetViewModel(private val repository: ISetRepository) : BaseViewModel() {
     private val mutableLiveDataListSets = MutableLiveData<Resource<List<ItemType>>>()
 
     var countPositionSets = 1
@@ -21,7 +21,7 @@ class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), IS
     val getLiveDataListSets: LiveData<Resource<List<ItemType>>>
         get() = mutableLiveDataListSets
 
-    override fun fetchListSets(position: Int, isFirstRequest: Boolean) {
+    fun fetchListSets(position: Int = 0, isFirstRequest: Boolean = true) {
         mutableLiveDataListSets.loading()
 
         viewModelScope.launchWithCallback(
@@ -33,18 +33,18 @@ class SetViewModel(private val repository: ISetRepository) : BaseViewModel(), IS
             })
     }
 
-    override fun nextSet() {
+    fun nextSet() {
         fetchListSets(countPositionSets++, false)
         releasedLoad = false
     }
 
-    override fun refreshListSets() {
+    fun refreshListSets() {
         countPositionSets = 1
         releasedLoad = false
         fetchListSets()
     }
 
-    override fun enablePagination(){
+    fun enablePagination(){
         releasedLoad = true
     }
 }

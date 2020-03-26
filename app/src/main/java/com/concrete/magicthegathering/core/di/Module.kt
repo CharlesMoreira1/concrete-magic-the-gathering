@@ -24,7 +24,7 @@ val viewModelModule = module {
 }
 
 val apiServiceClientModule = module {
-    single<ApiService> { ApiClient().retrofit.create(ApiService::class.java) }
+    single<ApiService> { ApiClient(get()).retrofit.create(ApiService::class.java) }
 }
 
 val databaseModule = module {
