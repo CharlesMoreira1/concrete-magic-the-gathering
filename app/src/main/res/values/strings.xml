@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Concrete - Magic The Gathering</string>
+
+    <!-- All App -->
+    <string name="message_status_erro_title">Sorry, something went wrong.</string>
+    <string name="message_status_erro_subtitle">Press the button below\nto try again.</string>
+    <string name="message_error_bottom">Sorry, failed to get more Magic collections.\nCheck your internet connection.</string>
+
+    <!-- Screen Sets -->
+    <string name="title_header">How about\nthese cards?</string>
+    <string name="message_alert_loading_set">"Wait… we're loading the next deck."</string>
+
+    <!-- Screen Detail Cards -->
+    <string name="name_button_favorite_add">add card</string>
+    <string name="name_button_favorite_remove">remove card</string>
 </resources>

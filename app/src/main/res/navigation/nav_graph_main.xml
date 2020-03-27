@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/setFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/setFragment"
+        android:name="com.concrete.magicthegathering.feature.listset.presentation.ui.fragment.SetFragment"
+        android:label="fragment_set"
+        tools:layout="@layout/fragment_set" >
+        <action
+            android:id="@+id/action_setFragment_to_detailCardFragment"
+            app:destination="@id/detailCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailCardFragment"
+        android:name="com.concrete.magicthegathering.feature.detailcard.presentation.ui.DetailCardFragment"
+        android:label="fragment_detail_card"
+        tools:layout="@layout/fragment_detail_card" >
+        <argument
+            android:name="image_card"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="id_card"
+            app:argType="string" />
+        <argument
+            android:name="name_card"
+            app:argType="string" />
+    </fragment>
+</navigation>
